@@ -1,0 +1,31 @@
+.app-box {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    /* border: 1px solid red; */
+}
+  
+.canvas-box {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    /* border: 1px solid blue; */
+}
+
+.overlay-box {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    pointer-events: none;
+}
+
+h1 {
+    color: white;
+}
