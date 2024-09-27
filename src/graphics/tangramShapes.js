@@ -26,18 +26,28 @@ function makeParaShape() {
 const shapePL = makeParaShape();
 
 // Geometric parameters for Triangles
-function makeTriShape(halfSide) {
+function makeTri(longHalfSide) {
     const shape = new THREE.Shape();
     shape.moveTo(0, 0);
-    shape.lineTo(-halfSide, +halfSide);
-    shape.lineTo(-halfSide, -halfSide);
-    shape.lineTo(+halfSide, -halfSide);
+    shape.lineTo(+longHalfSide, 0);
+    shape.lineTo(0, +longHalfSide);
+    shape.lineTo(-longHalfSide, 0);
     shape.lineTo(0, 0);
     return shape;
 }
-const shapeTL = makeTriShape(sqrt2);
-const shapeTM = makeTriShape(unit);
-const shapeTS = makeTriShape(sqrt2 / 2);
+
+function makeTMShape(halfSide) {
+    const shape = new THREE.Shape();
+    shape.moveTo(0, 0);
+    shape.lineTo(-halfSide, -halfSide);
+    shape.lineTo(+halfSide, -halfSide);
+    shape.lineTo(+halfSide, +halfSide);
+    shape.lineTo(0, 0);
+    return shape;
+}
+const shapeTL = makeTri(unit * 2);
+const shapeTM = makeTMShape(unit);
+const shapeTS = makeTri(unit);
 
 // Make the mesh for each piece in a set of Tangram puzzle
 export const TANGRAM_SHAPES = Object.freeze({

@@ -1,98 +1,95 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import OperationCoordinate from './OperationCoordinate';
+import PlayBoard from './PlayBoard';
+// eslint-disable-next-line
 import { OrbitControls } from '@react-three/drei';
-import { GameContextProvider, useGameContext } from '../contexts/GameContext';
+import { useGameContext } from '../contexts/GameContext';
+import { PuzzleList } from '../puzzles/puzzleLib';
+import PatternBoard from './PatternBoard';
+import Overlay from './Overlay';
+import { Dropdown, Button, Space } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 
 
-// function Env() {
-//     const files = ['./road.hdr', './port.hdr'];
-//     const i = 1;
-//     return (
-//         <Environment 
-//             files={files[i]}
-//             background
-//             backgroundBlurriness={0.8}
-//         />
-//     );
-// }
+function PuzzleDropdown({selectPuzzleKey}) {
+    const [selectedPuzzle, setSelectedPuzzle] = useState('Select a Puzzle');
+    
+    // Create the list of menu items with keys
+    const items = Object.keys(PuzzleList)
+        .filter((_, i) => i > 0)
+        .map((key, i) => ({ 
+            label: key, 
+            key: key,
+        }));
+
+    // Define the menu items
+    const menuProps = {
+        items,
+        onClick: (e) => {
+            setSelectedPuzzle(e.key);
+            selectPuzzleKey(e.key);
+        },
+    };
+
+    return (
+        <Dropdown className='pz-menu' menu={menuProps}>
+            <Button>
+                <Space>
+                    {selectedPuzzle}
+                    <DownOutlined />
+                </Space>
+            </Button>
+        </Dropdown>
+    );
+};
 
 
-// function Ground() {
-//     const gridProps = {
-//         infiniteGrid: true, 
-//         cellSize: 2, 
-//         cellThickness: 0.65 - 0.65, 
-//         sectionSize: 2, 
-//         sectionThickness: 1.35, 
-//         sectionColor: `rgb(200, 200, 200)`, 
-//         fadeDistance: 30, 
-//         receiveShadow: true,
-//     };
-//     const meshPos = [0, -0.001, 0];
-//     const meshRot = [-Math.PI * 0.5, 0, 0];
-//     return (
-//         <group>
-//             <Grid {...gridProps} />
-//             <mesh position={meshPos} rotation={meshRot} receiveShadow>
-//                 <planeGeometry args={[30, 30]} />
-//                 <meshBasicMaterial transparent />
-//                 <shadowMaterial transparent opacity={0.4} />
-//             </mesh>
-//         </group>
-//     );
-// }
-
-function MainCanvas() {
-
+function Game() {
     const { spin } = useGameContext();
+    const [puzzleKey, setPuzzleKey] = useState(undefined);
+    const [progress, setProgress] = useState(0);
+
+    const time = new Date();
+    time.setSeconds(time.getSeconds() + 600);
 
     const handleKeyDown = (event) => {
-        //console.log(`Key down: ${event.key}`);
-
-        if (event.key === 's') {
+        if (event.key === 'r') {
             spin.current = true;
-            //console.log(spin.current);
         }
     };
 
-    // Function to handle when a key is released
     const handleKeyUp = (event) => {
-        // console.log(`Key up: ${event.key}`);
-        if (event.key === 's') {
+        if (event.key === 'r') {
             spin.current = false;
-            //console.log(spin.current);
         }
     };
+
+    useEffect(() => {
+        if (puzzleKey) setProgress(0);
+    }, [puzzleKey]);
 
     // useEffect to handle adding and removing event listeners
     useEffect(() => {
-        // Add event listeners for keydown and keyup
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keyup', handleKeyUp);
-
-        // Clean up by removing event listeners on unmount
+        // Clean up
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
             window.removeEventListener('keyup', handleKeyUp);
         };
+    // eslint-disable-next-line
     }, []);
 
     return (
         <div className='canvas-box'>
             <Canvas orthographic camera={{ zoom: 80, position: [0,0,10] }} >
                 {/* <OrbitControls /> */}
-                <OperationCoordinate />
+                <PlayBoard puzzleKey={puzzleKey} handleProgress={setProgress} />
+                <PatternBoard puzzleKey={puzzleKey} />
             </Canvas>
+            <Overlay puzzleKey={puzzleKey} totalTime={time} progress={progress} />
+            <PuzzleDropdown selectPuzzleKey={setPuzzleKey} />
         </div>
-    );
-}
-
-function Game() {
-    return (
-        <GameContextProvider>
-            <MainCanvas />
-        </GameContextProvider>
     );
 }
 

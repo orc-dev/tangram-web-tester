@@ -1,14 +1,15 @@
 import React from 'react';
+import { GameContextProvider } from './contexts/GameContext';
 import Game from './components/Game';
-import Overlay from './components/Overlay';
+
 
 function App() {
     return (
         <div className='app-box'>
-            <Game />
-            <Overlay />
+            <GameContextProvider>
+                <Game />
+            </GameContextProvider>
         </div>
     );
 }
-
 export default App;

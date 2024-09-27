@@ -20,7 +20,6 @@ export function useBind(objRef, pieceKey, spin, camera, size, flipRef) {
         // Update cursor style
         document.body.style.cursor = down ? 'grabbing' : 'grab';
 
-        //console.log(`useDrag running... flipRef: ${flipRef.current[0]}`);
         const rotaBit = flipRef.current[0] & 1;
         const sign = (pieceKey === 'PL' && rotaBit) ? -1 : 1;
         
@@ -58,8 +57,6 @@ export function useBind(objRef, pieceKey, spin, camera, size, flipRef) {
             const result = roundToRad(initAngle + (B - A)) * sign;
             objRef.current.rotation.z = result;
 
-            console.log(deg(result * sign));
-
             // Update panning helper while object spinning
             initPan = diffVec.clone();
         }
@@ -85,7 +82,7 @@ function roundDist(vec) {
     // Helper function to round to the nearest multiple of UNIT
     const roundTo = (value, unit) => Math.round(value / unit) * unit;
 
-    // Return a new vector with components rounded to the nearest multiple of UNIT
+    // Return a new vector rounded to the nearest multiple of UNIT
     return new THREE.Vector3(
         roundTo(vec.x, UNIT),
         roundTo(vec.y, UNIT),
@@ -93,6 +90,7 @@ function roundDist(vec) {
     );
 }
 
+// eslint-disable-next-line
 function deg(a) {
     return (a * 180 / Math.PI).toFixed(2);
 }

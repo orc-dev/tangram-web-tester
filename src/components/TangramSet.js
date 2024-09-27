@@ -5,9 +5,8 @@ import { useGameContext } from '../contexts/GameContext';
 import { TANGRAM_SHAPES, THICKNESS, unit } from '../graphics/tangramShapes';
 import { pi, cyl_mesh } from '../graphics/meshes';
 
-function Piece({sid, pid, pieceKey, matSet, initPos, initRot}) {
-    console.log(`piece.${pieceKey} is rendering...`);
-    
+
+function Piece({ sid, pid, pieceKey, matSet }) {
     const { spin, globalHover, pieceRef, flipRef } = useGameContext();
     pieceRef.current[sid][pieceKey] = useRef();
     
@@ -19,7 +18,7 @@ function Piece({sid, pid, pieceKey, matSet, initPos, initRot}) {
     const bind = useBind(pieceRef.current[sid][pieceKey], 
         pieceKey, spin, camera, size, flipRef
     );
-    const mask = 1 << pid;
+    const mask = 1 << (sid * 7 + pid);
     const cylGeo = [unit / 20, unit / 20, THICKNESS * 2, 12, 1];
 
     const rotAxis = cyl_mesh(matSet.AX, cylGeo, [0,0,0], [pi(0.5),0,0]);
@@ -38,16 +37,21 @@ function Piece({sid, pid, pieceKey, matSet, initPos, initRot}) {
     });
     
     return (
-        <group position={initPos} rotation={initRot}
+        <group 
             ref={pieceRef.current[sid][pieceKey]}
             {...bind()}
-            onPointerOver={() => isHover.current = true }
-            onPointerOut={() => isHover.current = false }
+            onPointerOver={(event) => {
+                //event.stopPropagation();
+                isHover.current = true;} 
+            }
+            onPointerOut={(event) => {
+                //event.stopPropagation();
+                isHover.current = false;}
+            }
             onDoubleClick={(event) => {
                 event.stopPropagation();    
                 if (pieceKey === 'PL') {
                     flipRef.current[sid]++;
-                    console.log(`db-click on PL[${sid}]`);
                 }
             }}
         >
@@ -58,7 +62,7 @@ function Piece({sid, pid, pieceKey, matSet, initPos, initRot}) {
 }
 
 
-function TangramSet({sid, matSet, pos, rot}) {
+function TangramSet({ sid, matSet }) {
     const pieceKeys = ['TL0', 'TL1', 'TM', 'TS0', 'TS1', 'SQ', 'PL'];
     const { pieceRef, flipRef } = useGameContext();
 
@@ -68,15 +72,13 @@ function TangramSet({sid, matSet, pos, rot}) {
             const paraGroup = pieceRef.current[sid]['PL'].current;
             const rotaCheck = (flipRef.current[sid] & 1);
             paraGroup.rotation.y = (rotaCheck) ? Math.PI : 0;
-
         }
     });
 
     return (
         <group>
             {pieceKeys.map((k, i) => (
-                <Piece key={i} sid={sid} pid={i} pieceKey={k} matSet={matSet}
-                    initPos={pos[k]} initRot={rot[k]}/>
+                <Piece key={i} sid={sid} pid={i} pieceKey={k} matSet={matSet} />
             ))}
         </group>
     );
