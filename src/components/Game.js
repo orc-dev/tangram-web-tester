@@ -13,12 +13,17 @@ import { DownOutlined } from '@ant-design/icons';
 
 function PuzzleDropdown({selectPuzzleKey}) {
     const [selectedPuzzle, setSelectedPuzzle] = useState('Select a Puzzle');
-    
+    const info = [
+        '*', ' (wobbly)', ' (unaligned)', '*', '* (spinning)',
+        '*', '*', '*', '*', '*',
+        '*',
+    ];
+
     // Create the list of menu items with keys
     const items = Object.keys(PuzzleList)
         .filter((_, i) => i > 0)
         .map((key, i) => ({ 
-            label: key, 
+            label: `${key}${info[i]}`, 
             key: key,
         }));
 
