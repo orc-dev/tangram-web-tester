@@ -1,11 +1,11 @@
 {
   "files": {
     "main.css": "/tangram-web-tester/static/css/main.347e4f30.css",
-    "main.js": "/tangram-web-tester/static/js/main.f8c690d3.js",
+    "main.js": "/tangram-web-tester/static/js/main.2b481a93.js",
     "index.html": "/tangram-web-tester/index.html"
   },
   "entrypoints": [
     "static/css/main.347e4f30.css",
-    "static/js/main.f8c690d3.js"
+    "static/js/main.2b481a93.js"
   ]
 }
