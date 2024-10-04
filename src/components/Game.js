@@ -15,8 +15,7 @@ function PuzzleDropdown({selectPuzzleKey}) {
     const [selectedPuzzle, setSelectedPuzzle] = useState('Select a Puzzle');
     const info = [
         '*', ' (wobbly)', ' (unaligned)', '*', '* (spinning)',
-        '*', '*', '*', '*', '*',
-        '*',
+        '*', '*', '*', '*', '*', '*',
     ];
 
     // Create the list of menu items with keys

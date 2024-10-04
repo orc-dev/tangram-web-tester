@@ -1,7 +1,12 @@
 # Tangram Web-app Tester
 
-### Brief
-- A discrete tangram operation space has been created.
+## Brief
+This repository explores whether a tangram game can be played in a discrete space. An algorithm is designed and implemented to validate multiple correct solutions. The project is currently in the testing phase.
+
+### TODOs for the Complete Version:
+- **Two-set feature:** Implement the ability for players to solve puzzles using two sets of tangram pieces.
+- **Game structure:** Create a system where players can log in and solve puzzles in a predefined sequence, as set by the researcher. (Currently, puzzles are selected manually via a dropdown in testing mode.)
+- **Data collection:** Integrate a feature to collect and store player interaction data for research purposes.
 
 
 
