@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/tangram-web-tester/static/css/main.347e4f30.css",
-    "main.js": "/tangram-web-tester/static/js/main.a8bd574d.js",
-    "index.html": "/tangram-web-tester/index.html"
+    "main.css": "/tangram-web-pilot/static/css/main.347e4f30.css",
+    "main.js": "/tangram-web-pilot/static/js/main.a8bd574d.js",
+    "index.html": "/tangram-web-pilot/index.html"
   },
   "entrypoints": [
     "static/css/main.347e4f30.css",
